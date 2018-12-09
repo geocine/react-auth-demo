@@ -1,18 +1,38 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch
+} from 'react-router-dom'
+import TopBar from './components/TopBar'
+import PrivateRoute from './components/router/PrivateRoute'
+
+import HomePage from './components/HomePage'
+import AboutPage from './components/AboutPage'
+import LoginPage from './components/LoginPage'
+import AdminPage from './components/AdminPage'
+
 import './App.css';
+import AuthProvider from './services/Auth/AuthProvider';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            <code>react-auth-demo</code>
-          </p>
-        </header>
-      </div>
+      <Router>
+        <AuthProvider>
+          <div>
+            <TopBar />
+            <div className='mainbody'>
+              <Switch>
+                <Route path='/' exact component={HomePage} />
+                <Route path='/about' component={AboutPage} />
+                <Route path='/login' component={LoginPage} />
+                <PrivateRoute path='/admin' component={AdminPage} />
+              </Switch>
+            </div>
+          </div>
+        </AuthProvider>
+      </Router>
     );
   }
 }

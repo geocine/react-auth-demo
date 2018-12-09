@@ -7,6 +7,7 @@ const router = jsonServer.router('./database.json')
 const userdb = JSON.parse(fs.readFileSync('./users.json', 'UTF-8'))
 
 server.use(jsonServer.defaults());
+server.use(jsonServer.bodyParser)
 
 const SECRET_KEY = '%lP6ZATIxHGl0LeL69W^#99PRS5dwl2Z'
 
@@ -23,21 +24,26 @@ function verifyToken(token){
 }
 
 // Check if the user exists in database
-function isAuthenticated({email, password}){
-  return userdb.users.findIndex(user => user.email === email && user.password === password) !== -1
+function isAuthenticated({username, password}){
+  return userdb.users.findIndex(user => user.username === username && user.password === password) !== -1
+}
+
+function getUser({username, password}){
+  return userdb.users.find(user => user.username === username && user.password === password);
 }
 
 
 server.post('/auth/login', (req, res) => {
-  const {email, password} = req.body
-  if (isAuthenticated({email, password}) === false) {
+  const {username, password} = req.body
+  if (isAuthenticated({username, password}) === false) {
     const status = 401
-    const message = 'Incorrect email or password'
+    const message = 'Incorrect username or password'
     res.status(status).json({status, message})
     return
   }
-  const access_token = createToken({email, password})
-  res.status(200).json({access_token})
+  const accessToken = createToken({username, password})
+  const userInfo = getUser({username, password});
+  res.status(200).json({...userInfo, accessToken})
 })
 
 server.use(/^(?!\/auth).*$/,  (req, res, next) => {
