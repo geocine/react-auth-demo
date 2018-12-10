@@ -24,8 +24,8 @@ class AuthProvider extends React.Component  {
     this.setState({ ...this.state, userInfo: null, accessToken: null, isLoading: false, error: err});
   }
   async setInfo() {
-    const userInfo = sessionStorage.getItem('userInfo')
-    const accessToken = sessionStorage.getItem('accessToken')
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    const accessToken = localStorage.getItem('accessToken')
     if(userInfo) {
       this.setState({ ...this.state, userInfo, accessToken, isLoading: false, error: null})
     }
@@ -34,8 +34,8 @@ class AuthProvider extends React.Component  {
     this.toggleLoading();
     try {
       const userInfo = await postHttp('/auth/login',{username, password})
-      sessionStorage.setItem('userInfo', JSON.stringify(userInfo))
-      sessionStorage.setItem('accessToken', userInfo.accessToken)
+      localStorage.setItem('userInfo', JSON.stringify(userInfo))
+      localStorage.setItem('accessToken', userInfo.accessToken)
       this.fetchSuccess(userInfo)
     }
     catch(ex) {
@@ -44,8 +44,8 @@ class AuthProvider extends React.Component  {
   }
   async logout() {
     const userInfo = await postHttp('/auth/logout')
-    sessionStorage.removeItem('userInfo')
-    sessionStorage.removeItem('accessToken')
+    localStorage.removeItem('userInfo')
+    localStorage.removeItem('accessToken')
     return userInfo
   }
   render() {

@@ -11,7 +11,7 @@ const checkStatus = (response) => {
 }
 
 export const getHttp = (path) => {
-  const accessToken = sessionStorage.getItem('accessToken')
+  const accessToken = localStorage.getItem('accessToken')
   return fetch(`${path}`, {
     headers: {
       'Accept': 'application/json',
@@ -23,7 +23,7 @@ export const getHttp = (path) => {
 }
 
 export const postHttp = (path, data) => {
-  const accessToken = sessionStorage.getItem('accessToken')
+  const accessToken = localStorage.getItem('accessToken')
   return fetch(`${path}`, {
     method: 'POST',
     headers: {
@@ -37,7 +37,7 @@ export const postHttp = (path, data) => {
 }
 
 export const putHttp = (path, data) => {
-  const accessToken = sessionStorage.getItem('accessToken')
+  const accessToken = localStorage.getItem('accessToken')
 
   return fetch(`${path}`, {
     method: 'PUT',
