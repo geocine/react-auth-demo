@@ -3,9 +3,9 @@ import React from 'react'
 const HomePage = () => {
   return (
     <div>
-      <h2> Homepage </h2>
+      <h2> Home </h2>
       <p>
-        This is the homepage.
+        Welcome to the Home Page
       </p>
     </div>
   )

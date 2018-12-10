@@ -3,9 +3,9 @@ import React from 'react'
 const AboutPage = () => {
   return (
     <div>
-      <h2> Aboutpage </h2>
+      <h2> About </h2>
       <p>
-        This is the aboutpage.
+        This is the a demo how to use React Context API for Authentication and Authorization.
       </p>
     </div>
   )
