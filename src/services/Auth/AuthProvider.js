@@ -9,7 +9,7 @@ class AuthProvider extends React.Component  {
     this.setInfo = this.setInfo.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
-    this.state = { ...defaultState, login: this.login, logout: this.logout };
+    this.state = { ...defaultState, login: this.login, logout: this.logout, setInfo: this.setInfo };
   }
   componentDidMount () {
     this.setInfo();
@@ -26,8 +26,10 @@ class AuthProvider extends React.Component  {
   async setInfo() {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     const accessToken = localStorage.getItem('accessToken')
-    if(userInfo) {
+    if(userInfo && accessToken) {
       this.setState({ ...this.state, userInfo, accessToken, isLoading: false, error: null})
+    } else {
+      this.setState({ ...this.state, userInfo: null, accessToken: null, isLoading: false, error: null})
     }
   }
   async login(username, password){
@@ -46,6 +48,7 @@ class AuthProvider extends React.Component  {
     const userInfo = await postHttp('/auth/logout')
     localStorage.removeItem('userInfo')
     localStorage.removeItem('accessToken')
+    this.setState({ ...this.state, userInfo: null, accessToken: null, isLoading: false, error: null})
     return userInfo
   }
   render() {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  BrowserRouter as Router,
+  Router,
   Route,
   Switch
 } from 'react-router-dom'
@@ -14,11 +14,12 @@ import AdminPage from './components/AdminPage'
 
 import './App.css';
 import AuthProvider from './services/Auth/AuthProvider';
+import history from './helpers/history'
 
 class App extends Component {
   render() {
     return (
-      <Router>
+      <Router history={history}>
         <AuthProvider>
           <div>
             <TopBar />

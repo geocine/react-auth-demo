@@ -31,12 +31,12 @@ export default class Login extends Component {
   }
 
   render() {
-    let { from } = this.props.location.state || { from: { pathname: "/" } }
+    let { error, from } = this.props.location.state || { from: { pathname: "/" }, error: false }
     return (
       <div className="Login">
         <AuthConsumer>
           {({ userInfo, login }) => {
-            if (userInfo) return <Redirect to={from} />
+            if (userInfo && !error) return <Redirect to={from} />
             return (
               <form onSubmit={this.handleSubmit(login)}>
                 <div>

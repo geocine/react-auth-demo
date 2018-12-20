@@ -46,6 +46,12 @@ server.post('/auth/login', (req, res) => {
   res.status(200).json({...userInfo, accessToken})
 })
 
+server.post('/auth/logout', (req, res) => {
+  const status = 200
+  const message = 'You are logged out!'
+  res.status(status).json({status, message})
+})
+
 server.use(/^(?!\/auth).*$/,  (req, res, next) => {
   if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
     // no token

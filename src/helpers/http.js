@@ -1,52 +1,51 @@
+import history from './history'
 
-const checkStatus = (response) => {
+const checkStatus = async(response) => {
   if (response.status >= 200 && response.status < 300) {
-    return response
+    return response.json()
+  } else if(response.status === 401) {
+    localStorage.removeItem('userInfo')
+    localStorage.removeItem('accessToken')
+    history.push({
+      pathname: '/login',
+      state: { error: true }
+    })
   } else {
     const error = new Error(`HTTP Error ${response.statusText}`)
     error.status = response.statusText
-    error.response = response
+    error.response = await response.json()
     throw error
   }
 }
 
-export const getHttp = (path) => {
+const getHeaders = () => {
   const accessToken = localStorage.getItem('accessToken')
+  return {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${accessToken}`
+  }
+
+}
+
+export const getHttp = (path) => {
   return fetch(`${path}`, {
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${accessToken}`
-    }
+    headers: getHeaders()
   }).then(response => checkStatus(response))
-    .then(response => response.json())
 }
 
 export const postHttp = (path, data) => {
-  const accessToken = localStorage.getItem('accessToken')
   return fetch(`${path}`, {
     method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${accessToken}`
-    },
+    headers: getHeaders(),
     body: JSON.stringify(data)
   }).then(response => checkStatus(response))
-    .then(response => response.json())
 }
 
 export const putHttp = (path, data) => {
-  const accessToken = localStorage.getItem('accessToken')
-
   return fetch(`${path}`, {
     method: 'PUT',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${accessToken}`
-    },
+    headers: getHeaders(),
     body: JSON.stringify(data)
   }).then(response => checkStatus(response))
-    .then(response => response.json())
 }
