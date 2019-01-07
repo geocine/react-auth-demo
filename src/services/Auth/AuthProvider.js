@@ -6,13 +6,9 @@ import { postHttp } from '../../helpers/http'
 class AuthProvider extends React.Component  {
   constructor() {
     super();
-    this.setInfo = this.setInfo.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
-    this.state = { ...defaultState, login: this.login, logout: this.logout, setInfo: this.setInfo };
-  }
-  componentDidMount () {
-    this.setInfo();
+    this.state = { ...defaultState, login: this.login, logout: this.logout };
   }
   toggleLoading = () => {
     this.setState({ ...this.state, userInfo: null, accessToken: null, isLoading: true, error: null });
@@ -22,15 +18,6 @@ class AuthProvider extends React.Component  {
   }
   fetchFail = (err) => {
     this.setState({ ...this.state, userInfo: null, accessToken: null, isLoading: false, error: err});
-  }
-  async setInfo() {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-    const accessToken = localStorage.getItem('accessToken')
-    if(userInfo && accessToken) {
-      this.setState({ ...this.state, userInfo, accessToken, isLoading: false, error: null})
-    } else {
-      this.setState({ ...this.state, userInfo: null, accessToken: null, isLoading: false, error: null})
-    }
   }
   async login(username, password){
     this.toggleLoading();

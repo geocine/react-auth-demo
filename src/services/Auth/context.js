@@ -6,8 +6,7 @@ const defaultState = {
   error: null,
   accessToken: null,
   login: () => {},
-  logout: () => {},
-  setInfo: () => {}
+  logout: () => {}
 };
 
 const { Provider, Consumer } = React.createContext(defaultState);

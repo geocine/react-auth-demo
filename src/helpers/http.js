@@ -3,20 +3,22 @@ import history from './history'
 const checkStatus = async(response) => {
   if (response.status >= 200 && response.status < 300) {
     return response.json()
-  } else if(response.status === 401) {
-    localStorage.removeItem('userInfo')
-    localStorage.removeItem('accessToken')
-    history.push({
-      pathname: '/login',
-      state: { error: true }
-    })
-  } else {
+  } else  {
+    if(response.status === 401) {
+      localStorage.removeItem('userInfo')
+      localStorage.removeItem('accessToken')
+      history.push({
+        pathname: '/login',
+        state: { error: true }
+      })
+    }
     const error = new Error(`HTTP Error ${response.statusText}`)
     error.status = response.statusText
     error.response = await response.json()
     throw error
   }
 }
+
 
 const getHeaders = () => {
   const accessToken = localStorage.getItem('accessToken')
