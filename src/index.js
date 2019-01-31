@@ -5,6 +5,7 @@ import AlertTemplate from 'react-alert-template-basic'
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { AlertRef } from './helpers/alert';
 
 // optional cofiguration
 const options = {
@@ -17,7 +18,7 @@ const options = {
 class Root extends Component  { 
   render () {
     return (
-      <AlertProvider template={AlertTemplate} {...options}>
+      <AlertProvider template={AlertTemplate} {...options} ref={AlertRef.getInstance()}>
         <App />
       </AlertProvider>
     )

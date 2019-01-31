@@ -1,3 +1,17 @@
 
 import React from 'react';
-export const ref = React.createRef();
+export class AlertRef {
+
+  static instance = null;
+  static createInstance() {
+      var object = React.createRef();
+      return object;
+  }
+
+  static getInstance () {
+      if (!AlertRef.instance) {
+          AlertRef.instance = AlertRef.createInstance();
+      }
+      return AlertRef.instance;
+  }
+}

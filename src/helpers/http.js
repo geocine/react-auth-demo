@@ -1,4 +1,5 @@
 import history from './history'
+import { AlertRef } from './alert';
 
 const checkStatus = async(response) => {
   if (response.status >= 200 && response.status < 300) {
@@ -34,6 +35,7 @@ export const getHttp = (path) => {
   return fetch(`${path}`, {
     headers: getHeaders()
   }).then(response => checkStatus(response))
+  .catch(error => AlertRef.getInstance().current.show(error.message))
 }
 
 export const postHttp = (path, data) => {
