@@ -16,6 +16,7 @@ const checkStatus = async(response) => {
     const error = new Error(`HTTP Error ${response.statusText}`)
     error.status = response.statusText
     error.response = await response.json()
+    AlertRef.getInstance().current.show(error.status)
     throw error
   }
 }
@@ -35,7 +36,6 @@ export const getHttp = (path) => {
   return fetch(`${path}`, {
     headers: getHeaders()
   }).then(response => checkStatus(response))
-  .catch(error => AlertRef.getInstance().current.show(error.message))
 }
 
 export const postHttp = (path, data) => {
