@@ -1,50 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Provider, defaultState } from './context';
-import { postHttp } from '../../helpers/http'
+import { Provider } from './context';
 
-class AuthProvider extends React.Component  {
-  constructor() {
-    super();
-    this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
-    this.state = { ...defaultState, login: this.login, logout: this.logout };
+import { loginApp, logoutApp, loadUserInfo } from '../../actions';
+
+const AuthProvider = ({ children }) => {
+  const dispatch = useDispatch();
+  const userInfo = useSelector(({ userReducer }) => userReducer.userInfo);
+
+  useEffect(() => {
+    loadUser();
+  }, []);
+
+  function login(username, password) {
+    return dispatch(loginApp(username, password));
   }
-  toggleLoading = () => {
-    this.setState({ ...this.state, userInfo: null, accessToken: null, isLoading: true, error: null });
+
+  function logout() {
+    return dispatch(logoutApp());
   }
-  fetchSuccess = (data) => {
-    this.setState({ ...this.state, userInfo: data, accessToken: data.accessToken, isLoading: false, error: null });
-  }
-  fetchFail = (err) => {
-    this.setState({ ...this.state, userInfo: null, accessToken: null, isLoading: false, error: err});
-  }
-  async login(username, password){
-    this.toggleLoading();
-    try {
-      const userInfo = await postHttp('/auth/login',{username, password})
-      localStorage.setItem('userInfo', JSON.stringify(userInfo))
-      localStorage.setItem('accessToken', userInfo.accessToken)
-      this.fetchSuccess(userInfo)
-    }
-    catch(ex) {
-      this.fetchFail(ex)
-    }
-  }
-  async logout() {
-    const userInfo = await postHttp('/auth/logout')
-    localStorage.removeItem('userInfo')
-    localStorage.removeItem('accessToken')
-    this.setState({ ...this.state, userInfo: null, accessToken: null, isLoading: false, error: null})
-    return userInfo
-  }
-  render() {
-    return (
-      <Provider value={this.state}>
-        { this.props.children }
-      </Provider>
+
+  function loadUser() {
+    dispatch(
+      loadUserInfo({
+        userInfo: localStorage.getItem('userInfo'),
+        accessToken: localStorage.getItem('accessToken')
+      })
     );
   }
-}
+
+  return <Provider value={{ userInfo, logout, login }}>{children}</Provider>;
+};
 
 export default AuthProvider;

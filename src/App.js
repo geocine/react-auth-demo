@@ -23,7 +23,7 @@ class App extends Component {
     return (
       <Router history={history}>
         <AuthProvider>
-          <div>
+          <>
             <TopBar />
             <div className='mainbody'>
               <Switch>
@@ -38,7 +38,7 @@ class App extends Component {
                 Show Alert
               </button>
             </div>
-          </div>
+          </>
         </AuthProvider>
       </Router>
     );

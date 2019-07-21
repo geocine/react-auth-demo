@@ -1,71 +1,73 @@
-import React, { Component } from 'react'
-import AuthConsumer from '../services/Auth/AuthConsumer'
-import { Redirect } from 'react-router-dom'
+import React, { useState } from 'react';
+import AuthConsumer from '../services/Auth/AuthConsumer';
+import { Redirect } from 'react-router-dom';
 
-export default class Login extends Component {
-  constructor(props) {
-    super(props);
+const LoginPage = ({location }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-    this.state = {
-      username: "",
-      password: ""
-    };
+  function validateForm() {
+    return username.length > 0 && password.length > 0;
   }
 
-  validateForm() {
-    return this.state.username.length > 0 && this.state.password.length > 0;
-  }
-
-  handleChange = event => {
-    this.setState({
-      [event.target.id]: event.target.value
-    })
-  }
-
-  handleSubmit = login => {
-    return event => {
-      event.preventDefault();
-      const { username, password } = this.state
-      login(username, password);
+  function handleChange(event) {
+    switch (event.target.id) {
+      case 'username':
+        setUsername(event.target.value);
+        break;
+      case 'password':
+        setPassword(event.target.value);
+        break;
+      default:
+        break;
     }
   }
 
-  render() {
-    let { error, from } = this.props.location.state || { from: { pathname: "/" }, error: false }
-    return (
-      <div className="Login">
-        <AuthConsumer>
-          {({ userInfo, login }) => {
-            if (userInfo && !error) return <Redirect to={from} />
-            return (
-              <form onSubmit={this.handleSubmit(login)}>
-                <div>
-                  <label>Username</label>
-                  <input
-                    id="username"
-                    type="username"
-                    value={this.state.username}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                  />
-                </div>
-                <div>
-                  <label>Password</label>
-                  <input
-                    id="password"
-                    value={this.state.password}
-                    onChange={this.handleChange}
-                    type="password"
-                  />
-                </div>
-                <button disabled={!this.validateForm()} type="submit">
-                  Login
-                </button>
-              </form>
-            );
-          }}
-        </AuthConsumer>
-      </div>
-    );
+  function handleSubmit(login) {
+    return event => {
+      event.preventDefault();
+      login(username, password);
+    };
   }
-}
+
+  let { from } = location.state || {
+    from: { pathname: '/' }
+  };
+  return (
+    <div className="Login">
+      <AuthConsumer>
+        {({ userInfo, login }) => {
+          if (userInfo) return <Redirect to={from} />;
+          return (
+            <form onSubmit={handleSubmit(login)}>
+              <div>
+                <label>Username</label>
+                <input
+                  id="username"
+                  type="username"
+                  value={username}
+                  onChange={handleChange}
+                  autoComplete="off"
+                />
+              </div>
+              <div>
+                <label>Password</label>
+                <input
+                  id="password"
+                  value={password}
+                  onChange={handleChange}
+                  type="password"
+                />
+              </div>
+              <button disabled={!validateForm()} type="submit">
+                Login
+              </button>
+            </form>
+          );
+        }}
+      </AuthConsumer>
+    </div>
+  );
+};
+
+export default LoginPage;
