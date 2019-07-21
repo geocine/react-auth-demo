@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import AuthConsumer from '../services/Auth/AuthConsumer';
 import { Redirect } from 'react-router-dom';
 
-const LoginPage = ({location }) => {
+const LoginPage = ({ location }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -32,12 +32,15 @@ const LoginPage = ({location }) => {
 
   let { from } = location.state || {
     from: { pathname: '/' }
-  };
+  }
+
   return (
     <div className="Login">
       <AuthConsumer>
-        {({ userInfo, login }) => {
-          if (userInfo) return <Redirect to={from} />;
+        {({ userInfo, login, error }) => {
+          if (userInfo && !error) {
+            return <Redirect to={from} />;
+          }
           return (
             <form onSubmit={handleSubmit(login)}>
               <div>

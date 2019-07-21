@@ -8,6 +8,7 @@ import { loginApp, logoutApp, loadUserInfo } from '../../actions';
 const AuthProvider = ({ children }) => {
   const dispatch = useDispatch();
   const userInfo = useSelector(({ userReducer }) => userReducer.userInfo);
+  const error = useSelector(({ userReducer }) => userReducer.error);
 
   useEffect(() => {
     loadUser();
@@ -30,7 +31,7 @@ const AuthProvider = ({ children }) => {
     );
   }
 
-  return <Provider value={{ userInfo, logout, login }}>{children}</Provider>;
+  return <Provider value={{ userInfo, logout, login, error }}>{children}</Provider>;
 };
 
 export default AuthProvider;

@@ -1,27 +1,27 @@
-import React from 'react'
-import AuthConsumer from '../../services/Auth/AuthConsumer'
-import { Route, Redirect } from 'react-router-dom'
+import React from 'react';
+import AuthConsumer from '../../services/Auth/AuthConsumer';
+import { Route, Redirect } from 'react-router-dom';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props => (
       <AuthConsumer>
-        {({ userInfo }) =>
-          userInfo ? (
+        {({ userInfo }) => {
+          return userInfo ? (
             <Component {...props} />
           ) : (
             <Redirect
               to={{
-                pathname: "/login",
+                pathname: '/login',
                 state: { from: props.location }
               }}
             />
-          )
-        }
+          );
+        }}
       </AuthConsumer>
     )}
   />
 );
 
-export default PrivateRoute
+export default PrivateRoute;
