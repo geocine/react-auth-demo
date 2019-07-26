@@ -11,8 +11,7 @@ export const {
   'LOGIN_APP_REQUEST',
   'LOGIN_APP_RESPONSE',
   'LOGOUT_APP_REQUEST',
-  'LOGOUT_APP_RESPONSE',
-  'LOAD_USER_INFO'
+  'LOGOUT_APP_RESPONSE'
 );
 
 export const loginApp = (username, password) => async dispatch => {

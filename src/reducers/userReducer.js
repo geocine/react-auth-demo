@@ -4,7 +4,6 @@ import {
   loginAppResponse,
   logoutAppRequest,
   logoutAppResponse,
-  loadUserInfo
 } from '../actions';
 
 const defaultState = {
@@ -34,13 +33,6 @@ const reducer = handleActions(
       localStorage.removeItem('userInfo');
       localStorage.removeItem('accessToken');
       return { ...defaultState, error };
-    },
-    [loadUserInfo]: (state, { payload }) => {
-      const { userInfo, accessToken } = payload;
-      if(userInfo && accessToken) {
-        return {...state, userInfo: JSON.parse(userInfo), accessToken};
-      }
-      return state;
     }
   },
   defaultState

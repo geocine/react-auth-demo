@@ -14,11 +14,17 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { AlertRef } from './helpers/alert';
 
-const middleware = [thunk]
-middleware.push(createLogger())
+const middleware = [thunk];
+middleware.push(createLogger());
 
 const store = createStore(
   rootReducer,
+  {
+    userReducer: {
+      userInfo: localStorage.getItem('userInfo'),
+      accessToken: localStorage.getItem('accessToken')
+    }
+  },
   compose(
     applyMiddleware(...middleware),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()

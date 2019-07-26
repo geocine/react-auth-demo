@@ -30,10 +30,8 @@ const LoginPage = ({ location }) => {
     };
   }
 
-  let { from } = location.state || {
-    from: { pathname: '/' }
-  }
-
+  let from = (location.state && location.state.from) || { pathname: '/' };
+  
   return (
     <div className="Login">
       <AuthConsumer>
