@@ -6,7 +6,7 @@
     "concurrently": "^4.1.0",
     "http-proxy-middleware": "^0.19.1",
     "json-server": "^0.12.1",
-    "jsonwebtoken": "^8.1.0",
+    "jsonwebtoken": "^9.0.0",
     "react": "^16.6.3",
     "react-alert": "^4.0.4",
     "react-alert-template-basic": "^1.0.0",
